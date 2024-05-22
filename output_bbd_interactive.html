@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 2000px;
+                 height: 2000px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "Main Gallery", "label": "Main Gallery", "shape": "dot", "size": 89.44271909999159, "title": "Main Gallery\nArea: 2000"}, {"color": "#97c2fc", "id": "Lobby", "label": "Lobby", "shape": "dot", "size": 37.416573867739416, "title": "Lobby\nArea: 350"}, {"color": "#97c2fc", "id": "DIY workshop", "label": "DIY workshop", "shape": "dot", "size": 28.982753492378876, "title": "DIY workshop\nArea: 210"}, {"color": "#97c2fc", "id": "Temp Gallery", "label": "Temp Gallery", "shape": "dot", "size": 63.245553203367585, "title": "Temp Gallery\nArea: 1000"}, {"color": "#97c2fc", "id": "Office Toilet 1", "label": "Office Toilet 1", "shape": "dot", "size": 20, "title": "Office Toilet 1\nArea: 10"}, {"color": "#97c2fc", "id": "Office", "label": "Office", "shape": "dot", "size": 18.439088914585774, "title": "Office\nArea: 85"}, {"color": "#97c2fc", "id": "Office Toilet 2", "label": "Office Toilet 2", "shape": "dot", "size": 20, "title": "Office Toilet 2\nArea: 10"}, {"color": "#97c2fc", "id": "Showroom", "label": "Showroom", "shape": "dot", "size": 17.88854381999832, "title": "Showroom\nArea: 80"}, {"color": "#97c2fc", "id": "Intermediate storage space", "label": "Intermediate storage space", "shape": "dot", "size": 20.0, "title": "Intermediate storage space\nArea: 100"}, {"color": "#97c2fc", "id": "Workshop space", "label": "Workshop space", "shape": "dot", "size": 20, "title": "Workshop space\nArea: 50"}, {"color": "#97c2fc", "id": "Loading area", "label": "Loading area", "shape": "dot", "size": 20, "title": "Loading area\nArea: 40"}, {"color": "#97c2fc", "id": "Toilet and shower room", "label": "Toilet and shower room", "shape": "dot", "size": 20, "title": "Toilet and shower room\nArea: 6"}, {"color": "#97c2fc", "id": "Information desk and ticket sales", "label": "Information desk and ticket sales", "shape": "dot", "size": 20, "title": "Information desk and ticket sales\nArea: 12"}, {"color": "#97c2fc", "id": "Museum shop", "label": "Museum shop", "shape": "dot", "size": 17.88854381999832, "title": "Museum shop\nArea: 80"}, {"color": "#97c2fc", "id": "Storage_office space", "label": "Storage_office space", "shape": "dot", "size": 20, "title": "Storage_office space\nArea: 28"}, {"color": "#97c2fc", "id": "Security and camera control room", "label": "Security and camera control room", "shape": "dot", "size": 20, "title": "Security and camera control room\nArea: 16"}, {"color": "#97c2fc", "id": "Cloakroom", "label": "Cloakroom", "shape": "dot", "size": 16.73320053068151, "title": "Cloakroom\nArea: 70"}, {"color": "#97c2fc", "id": "Customer toilet, gender neutral", "label": "Customer toilet, gender neutral", "shape": "dot", "size": 20, "title": "Customer toilet, gender neutral\nArea: 25"}, {"color": "#97c2fc", "id": "Customer toilet, women", "label": "Customer toilet, women", "shape": "dot", "size": 20, "title": "Customer toilet, women\nArea: 14"}, {"color": "#97c2fc", "id": "Restaurant", "label": "Restaurant", "shape": "dot", "size": 26.832815729997478, "title": "Restaurant\nArea: 180"}, {"color": "#97c2fc", "id": "Customer toilet, men", "label": "Customer toilet, men", "shape": "dot", "size": 20, "title": "Customer toilet, men\nArea: 10"}, {"color": "#97c2fc", "id": "Customer toilet, accessible", "label": "Customer toilet, accessible", "shape": "dot", "size": 20, "title": "Customer toilet, accessible\nArea: 12"}, {"color": "#97c2fc", "id": "Event space, class trip/lunch space", "label": "Event space, class trip/lunch space", "shape": "dot", "size": 20.0, "title": "Event space, class trip/lunch space\nArea: 100"}, {"color": "#97c2fc", "id": "Furniture storage", "label": "Furniture storage", "shape": "dot", "size": 20, "title": "Furniture storage\nArea: 20"}, {"color": "#97c2fc", "id": "Auditorium", "label": "Auditorium", "shape": "dot", "size": 30.331501776206203, "title": "Auditorium\nArea: 230"}, {"color": "#97c2fc", "id": "AV technology space, light-sound table", "label": "AV technology space, light-sound table", "shape": "dot", "size": 20, "title": "AV technology space, light-sound table\nArea: 7"}, {"color": "#97c2fc", "id": "Technology storage", "label": "Technology storage", "shape": "dot", "size": 20, "title": "Technology storage\nArea: 30"}, {"color": "#97c2fc", "id": "Changing room, backroom", "label": "Changing room, backroom", "shape": "dot", "size": 20, "title": "Changing room, backroom\nArea: 12"}, {"color": "#97c2fc", "id": "Toilet + shower ICW the changing room", "label": "Toilet + shower ICW the changing room", "shape": "dot", "size": 20, "title": "Toilet + shower ICW the changing room\nArea: 10"}, {"color": "#97c2fc", "id": "Kitchen", "label": "Kitchen", "shape": "dot", "size": 17.320508075688775, "title": "Kitchen\nArea: 75"}, {"color": "#97c2fc", "id": "Restaurant\u2019s other storage", "label": "Restaurant\u2019s other storage", "shape": "dot", "size": 20, "title": "Restaurant\u2019s other storage\nArea: 25"}, {"color": "#97c2fc", "id": "Cleaning closet", "label": "Cleaning closet", "shape": "dot", "size": 20, "title": "Cleaning closet\nArea: 4"}, {"color": "#97c2fc", "id": "Service desk", "label": "Service desk", "shape": "dot", "size": 20, "title": "Service desk\nArea: 20"}, {"color": "#97c2fc", "id": "Caf\u00e9\u2019s customer seat area", "label": "Caf\u00e9\u2019s customer seat area", "shape": "dot", "size": 20, "title": "Caf\u00e9\u2019s customer seat area\nArea: 45"}, {"color": "#97c2fc", "id": "Children\u0027s free activity/playing area", "label": "Children\u0027s free activity/playing area", "shape": "dot", "size": 20, "title": "Children\u0027s free activity/playing area\nArea: 30"}, {"color": "#97c2fc", "id": "Toilet", "label": "Toilet", "shape": "dot", "size": 20, "title": "Toilet\nArea: 4"}, {"color": "#97c2fc", "id": "Meeting room", "label": "Meeting room", "shape": "dot", "size": 20, "title": "Meeting room\nArea: 18"}, {"color": "#97c2fc", "id": "Supplies storage", "label": "Supplies storage", "shape": "dot", "size": 20, "title": "Supplies storage\nArea: 4"}, {"color": "#97c2fc", "id": "Archive and supplies storage", "label": "Archive and supplies storage", "shape": "dot", "size": 20, "title": "Archive and supplies storage\nArea: 15"}, {"color": "#97c2fc", "id": "Changing room 1", "label": "Changing room 1", "shape": "dot", "size": 20, "title": "Changing room 1\nArea: 15"}, {"color": "#97c2fc", "id": "Changing room 2", "label": "Changing room 2", "shape": "dot", "size": 20, "title": "Changing room 2\nArea: 15"}, {"color": "#97c2fc", "id": "Changing room 3", "label": "Changing room 3", "shape": "dot", "size": 20, "title": "Changing room 3\nArea: 10"}, {"color": "#97c2fc", "id": "Washing room 1", "label": "Washing room 1", "shape": "dot", "size": 20, "title": "Washing room 1\nArea: 5"}, {"color": "#97c2fc", "id": "Washing room 2", "label": "Washing room 2", "shape": "dot", "size": 20, "title": "Washing room 2\nArea: 5"}, {"color": "#97c2fc", "id": "Washing room 3", "label": "Washing room 3", "shape": "dot", "size": 20, "title": "Washing room 3\nArea: 2"}, {"color": "#97c2fc", "id": "Accessible toilet", "label": "Accessible toilet", "shape": "dot", "size": 20, "title": "Accessible toilet\nArea: 5"}, {"color": "#97c2fc", "id": "Break room", "label": "Break room", "shape": "dot", "size": 20, "title": "Break room\nArea: 40"}, {"color": "#97c2fc", "id": "Waste sorting area", "label": "Waste sorting area", "shape": "dot", "size": 20, "title": "Waste sorting area\nArea: 40"}, {"color": "#97c2fc", "id": "Cleaning equipment storage", "label": "Cleaning equipment storage", "shape": "dot", "size": 20, "title": "Cleaning equipment storage\nArea: 40"}, {"color": "#97c2fc", "id": "Cleaning closets", "label": "Cleaning closets", "shape": "dot", "size": 20, "title": "Cleaning closets\nArea: 40"}, {"color": "#97c2fc", "id": "Museum shop storage", "label": "Museum shop storage", "shape": "dot", "size": 20, "title": "Museum shop storage\nArea: 40"}, {"color": "#97c2fc", "id": "Ventilation unit room", "label": "Ventilation unit room", "shape": "dot", "size": 20, "title": "Ventilation unit room\nArea: 40"}, {"color": "#97c2fc", "id": "Ventilation unit(special condition)", "label": "Ventilation unit(special condition)", "shape": "dot", "size": 20, "title": "Ventilation unit(special condition)\nArea: 40"}, {"color": "#97c2fc", "id": "Sprinkler Room", "label": "Sprinkler Room", "shape": "dot", "size": 20, "title": "Sprinkler Room\nArea: 40"}, {"color": "#97c2fc", "id": "Central electrical room", "label": "Central electrical room", "shape": "dot", "size": 20, "title": "Central electrical room\nArea: 40"}, {"color": "#97c2fc", "id": "Distribution Point", "label": "Distribution Point", "shape": "dot", "size": 20, "title": "Distribution Point\nArea: 40"}, {"color": "#97c2fc", "id": "Electrical and telecommunications rooms", "label": "Electrical and telecommunications rooms", "shape": "dot", "size": 20, "title": "Electrical and telecommunications rooms\nArea: 40"}, {"color": "#97c2fc", "id": "Heat distribution centre", "label": "Heat distribution centre", "shape": "dot", "size": 20, "title": "Heat distribution centre\nArea: 40"}, {"color": "#97c2fc", "id": "Emergency power engine room", "label": "Emergency power engine room", "shape": "dot", "size": 20, "title": "Emergency power engine room\nArea: 40"}, {"color": "#97c2fc", "id": "Technology shafts", "label": "Technology shafts", "shape": "dot", "size": 20, "title": "Technology shafts\nArea: 40"}, {"color": "#97c2fc", "id": "Freight elevator", "label": "Freight elevator", "shape": "dot", "size": 20, "title": "Freight elevator\nArea: 40"}, {"color": "#97c2fc", "id": "Restaurant terrace", "label": "Restaurant terrace", "shape": "dot", "size": 20, "title": "Restaurant terrace\nArea: 40"}, {"color": "#97c2fc", "id": "Storage of outdoor furniture", "label": "Storage of outdoor furniture", "shape": "dot", "size": 20, "title": "Storage of outdoor furniture\nArea: 40"}, {"color": "#97c2fc", "id": "Event area", "label": "Event area", "shape": "dot", "size": 20, "title": "Event area\nArea: 40"}, {"color": "#97c2fc", "id": "Play area", "label": "Play area", "shape": "dot", "size": 20, "title": "Play area\nArea: 40"}]);
+                  edges = new vis.DataSet([{"from": "Main Gallery", "to": "Lobby"}, {"from": "Main Gallery", "to": "DIY workshop"}, {"from": "DIY workshop", "to": "Lobby"}, {"from": "Temp Gallery", "to": "Main Gallery"}, {"from": "Office Toilet 1", "to": "Office"}, {"from": "Office", "to": "Lobby"}, {"from": "Office Toilet 2", "to": "Office"}, {"from": "Showroom", "to": "Lobby"}, {"from": "Intermediate storage space", "to": "Lobby"}, {"from": "Workshop space", "to": "Loading area"}, {"from": "Loading area", "to": "Office"}, {"from": "Toilet and shower room", "to": "Office"}, {"from": "Information desk and ticket sales", "to": "Lobby"}, {"from": "Museum shop", "to": "Lobby"}, {"from": "Storage_office space", "to": "Office"}, {"from": "Security and camera control room", "to": "Museum shop"}, {"from": "Cloakroom", "to": "Lobby"}, {"from": "Customer toilet, gender neutral", "to": "Lobby"}, {"from": "Customer toilet, women", "to": "Restaurant"}, {"from": "Customer toilet, women", "to": "Lobby"}, {"from": "Restaurant", "to": "Kitchen"}, {"from": "Customer toilet, men", "to": "Restaurant"}, {"from": "Customer toilet, men", "to": "Lobby"}, {"from": "Customer toilet, accessible", "to": "Restaurant"}, {"from": "Customer toilet, accessible", "to": "Lobby"}, {"from": "Event space, class trip/lunch space", "to": "Restaurant"}, {"from": "Event space, class trip/lunch space", "to": "Lobby"}, {"from": "Furniture storage", "to": "Auditorium"}, {"from": "Furniture storage", "to": "Lobby"}, {"from": "Auditorium", "to": "Lobby"}, {"from": "AV technology space, light-sound table", "to": "Auditorium"}, {"from": "Technology storage", "to": "Auditorium"}, {"from": "Changing room, backroom", "to": "Auditorium"}, {"from": "Toilet + shower ICW the changing room", "to": "Auditorium"}, {"from": "Restaurant\u2019s other storage", "to": "Kitchen"}, {"from": "Cleaning closet", "to": "Kitchen"}, {"from": "Service desk", "to": "Restaurant"}, {"from": "Caf\u00e9\u2019s customer seat area", "to": "Kitchen"}, {"from": "Children\u0027s free activity/playing area", "to": "Kitchen"}, {"from": "Toilet", "to": "Office"}, {"from": "Meeting room", "to": "Office"}, {"from": "Supplies storage", "to": "Office"}, {"from": "Archive and supplies storage", "to": "Office"}, {"from": "Changing room 1", "to": "Office"}, {"from": "Changing room 2", "to": "Office"}, {"from": "Changing room 3", "to": "Office"}, {"from": "Washing room 1", "to": "Office"}, {"from": "Washing room 2", "to": "Office"}, {"from": "Washing room 3", "to": "Office"}, {"from": "Accessible toilet", "to": "Office"}, {"from": "Break room", "to": "Office"}, {"from": "Waste sorting area", "to": "Kitchen"}, {"from": "Waste sorting area", "to": "Lobby"}, {"from": "Cleaning equipment storage", "to": "Kitchen"}, {"from": "Cleaning closets", "to": "Kitchen"}, {"from": "Museum shop storage", "to": "Museum shop"}, {"from": "Ventilation unit room", "to": "Main Gallery"}, {"from": "Ventilation unit(special condition)", "to": "Main Gallery"}, {"from": "Freight elevator", "to": "Loading area"}, {"from": "Restaurant terrace", "to": "Loading area"}, {"from": "Storage of outdoor furniture", "to": "Restaurant"}, {"from": "Event area", "to": "Lobby"}, {"from": "Play area", "to": "Restaurant terrace"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
